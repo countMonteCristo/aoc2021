@@ -1,5 +1,5 @@
 CXX=g++
-CXXFLAGS=-Wall -Wextra -pedantic -std=c++1z
+CXXFLAGS=-Wall -Wextra -pedantic -std=c++17
 
 day01: day01.cpp
 	${CXX} ${CXXFLAGS} day01.cpp -o day01
