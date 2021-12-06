@@ -1,6 +1,9 @@
 CXX=g++
 CXXFLAGS=-Wall -Wextra -pedantic -std=c++17
 
+clean:
+	rm day[0-2][0-9]
+
 day01: day01.cpp
 	${CXX} ${CXXFLAGS} day01.cpp -o day01
 
