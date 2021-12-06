@@ -1,6 +1,16 @@
 CXX=g++
 CXXFLAGS=-Wall -Wextra -pedantic -std=c++17
 
+SOURCES := $(wildcard day*.cpp)
+TARGETS := $(basename ${SOURCES})
+
+.PHONY: clean all
+
+all:
+	for target in $(TARGETS); do \
+        $(MAKE) -B $$target; \
+    done
+
 clean:
 	rm day[0-2][0-9]
 
