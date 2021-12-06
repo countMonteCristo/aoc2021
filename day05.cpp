@@ -1,187 +1,131 @@
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <sstream>
-
-
-typedef std::vector<std::string> input_t;
-typedef std::vector<size_t> row_t;
+#include "common.hpp"
 
 
 struct Point {
-    size_t x;
-    size_t y;
+    Point() : x(0), y(0) {}
+    Point(uint32_t x_, uint32_t y_) : x(x_), y(y_) {}
+    uint32_t x;
+    uint32_t y;
 };
+
 struct Line {
+    Line(const Point& p1_, const Point& p2_) : p1(p1_), p2(p2_) {}
     Point p1;
     Point p2;
 };
 
+auto s2point = [](const std::string& s) {
+    input_t sub = split<std::string>(s, ',');
+    return Point(s2u32(sub[0]), s2u32(sub[1]));
+};
+
+auto s2line = [](const std::string& s) {
+    input_t sub = split<std::string>(s, ' ');
+    return Line(s2point(sub[0]), s2point(sub[2]));
+};
+
 typedef std::vector<Line> lines_t;
 
-input_t split(const std::string& line, char delim) {
-    input_t result;
-    std::stringstream stream(line);
-    std::string item;
+struct Table {
+    Table(const input_t& input) : width(0), height(0) {
+        lines = convert<Line>(input, s2line);
+        _init_size();
 
-    while (std::getline(stream, item, delim)) {
-        result.push_back(item);
+        field.resize(height);
+        for (size_t r = 0; r < field.size(); r++) {
+            field[r].resize(width);
+        }
     }
 
-    return result;
-}
-
-Point parse_point(const std::string& s) {
-    input_t coords_str = split(s, ',');
-    Point p;
-    p.x = std::stoul(coords_str[0]);
-    p.y = std::stoul(coords_str[1]);
-    return p;
-}
-
-input_t load_input_from(const std::string& filepath) {
-    std::ifstream infile(filepath);
-    if ( !infile.is_open() ) {
-        std::cerr << "Cannot open input file: " << filepath << std::endl;
-        std::exit(1);
-    }
-
-    input_t result;
-    std::string line;
-    while (std::getline(infile, line)) {
-        result.push_back(line);
-    }
-    return result;
-}
-
-lines_t parse(const input_t& input) {
     lines_t lines;
-    for (const auto& row: input ) {
-        input_t line_str = split(row, ' ');
-        Line l;
-        l.p1 = parse_point(line_str[0]);
-        l.p2 = parse_point(line_str[2]);
-        lines.push_back(l);
+    std::vector<u32v_t> field;
+    uint32_t width;
+    uint32_t height;
+
+    void _init_size() {
+        for (const auto& line: lines) {
+            width = std::max(width, line.p1.x);
+            width = std::max(width, line.p2.x);
+            height = std::max(height, line.p1.y);
+            height = std::max(height, line.p2.y);
+        }
+        width++;
+        height++;
     }
-    return lines;
-}
 
+    void process(bool all=false) {
+        uint32_t start, finish;
+        uint32_t r_start, c_start, r_finish, c_finish;
 
+        for (const auto& line: lines) {
+            if (line.p1.x == line.p2.x) {           // vertical
+                minmax(line.p1.y, line.p2.y, start, finish);
+                for (size_t r = start; r <= finish; r++) {
+                    field[r][line.p1.x]++;
+                }
+            } else if (line.p1.y == line.p2.y) {    // horizontal
+                minmax(line.p1.x, line.p2.x, start, finish);
+                for (size_t c = start; c <= finish; c++) {
+                    field[line.p1.y][c]++;
+                }
+            } else if (all) {                       // 45 degrees
+
+                int dx = line.p2.x - line.p1.x;
+                int dy = line.p2.y - line.p1.y;
+
+                minmax(line.p1.y, line.p2.y, r_start, r_finish);
+                minmax(line.p1.x, line.p2.x, c_start, c_finish);
+
+                if (dx == dy) {
+                    minmax(line.p1.x, line.p2.x, c_start, c_finish);
+                    for (size_t r=r_start, c=c_start; (r <=r_finish) && (c <= c_finish); r++, c++) {
+                        field[r][c]++;
+                    }
+                } else if (dx == -dy) {
+                    std::swap(c_start, c_finish);
+                    for (size_t r=r_start, c=c_start; (r <=r_finish) && (c >= c_finish); r++, c--) {
+                        field[r][c]++;
+                    }
+                } else {
+                    std::cerr << "WTF?" << std::endl;
+                }
+
+            }
+        }
+    }
+
+    uint32_t ans() {
+        uint32_t result = 0;
+        for (size_t r = 0; r < field.size(); r++) {
+            for (size_t c = 0; c < field[r].size(); c++) {
+                if ( field[r][c] > 1) {
+                    result++;
+                }
+            }
+        }
+        return result;
+    }
+};
 
 void part_1(const input_t& input) {
-    lines_t lines = parse(input);
+    Table table(input);
+    table.process();
+    size_t ans = table.ans();
 
-    size_t max_x = 0;
-    size_t max_y = 0;
-    for (const auto& line: lines) {
-        max_x = std::max(max_x, line.p1.x);
-        max_x = std::max(max_x, line.p2.x);
-        max_y = std::max(max_y, line.p1.y);
-        max_y = std::max(max_y, line.p2.y);
-    }
-    std::cout << max_x << " " << max_y << std::endl;
-
-    std::vector<std::vector<size_t>> table;
-    table.resize(max_y);
-    for (size_t r = 0; r < table.size(); r++) {
-        table[r].resize(max_x);
-    }
-
-    for (const auto& line: lines) {
-        if (line.p1.x == line.p2.x) {
-            size_t start = std::min(line.p1.y, line.p2.y);
-            size_t finish = std::max(line.p1.y, line.p2.y);
-            for (size_t r=start; r <= finish; r++) {
-                table[r][line.p1.x]++;
-            }
-        } else if (line.p1.y == line.p2.y) {
-            size_t start = std::min(line.p1.x, line.p2.x);
-            size_t finish = std::max(line.p1.x, line.p2.x);
-            for (size_t c=start; c <= finish; c++) {
-                table[line.p1.y][c]++;
-            }
-        }
-    }
-
-    size_t ans = 0;
-    for (size_t r = 0; r < table.size(); r++) {
-        for (size_t c = 0; c < table[r].size(); c++) {
-            if ( table[r][c] > 1) {
-                ans++;
-            }
-        }
-    }
+    if (ans != 7436)
+        std::cerr << "Wrong answer in day 05, part 1" << std::endl;
 
     std::cout << "[Task 1]" << " ans=" << ans << std::endl;
 }
 
 
 void part_2(const input_t& input) {
+    Table table(input);
+    table.process(true);
+    size_t ans = table.ans();
 
-    lines_t lines = parse(input);
-
-    size_t max_x = 0;
-    size_t max_y = 0;
-    for (const auto& line: lines) {
-        max_x = std::max(max_x, line.p1.x);
-        max_x = std::max(max_x, line.p2.x);
-        max_y = std::max(max_y, line.p1.y);
-        max_y = std::max(max_y, line.p2.y);
-    }
-    std::vector<std::vector<size_t>> table;
-    table.resize(max_y + 1);
-    for (size_t r = 0; r < table.size(); r++) {
-        table[r].resize(max_x + 1);
-    }
-
-    for (const auto& line: lines) {
-        if (line.p1.x == line.p2.x) {
-            size_t start = std::min(line.p1.y, line.p2.y);
-            size_t finish = std::max(line.p1.y, line.p2.y);
-            for (size_t r=start; r <= finish; r++) {
-                table[r][line.p1.x]++;
-            }
-        } else if (line.p1.y == line.p2.y) {
-            size_t start = std::min(line.p1.x, line.p2.x);
-            size_t finish = std::max(line.p1.x, line.p2.x);
-            for (size_t c=start; c <= finish; c++) {
-                table[line.p1.y][c]++;
-            }
-        } else {    // 45 degrees
-            int dx = line.p2.x - line.p1.x;
-            int dy = line.p2.y - line.p1.y;
-
-            if (dx == dy) {
-                size_t r_start = std::min(line.p1.y, line.p2.y);
-                size_t r_finish = std::max(line.p1.y, line.p2.y);
-                size_t c_start = std::min(line.p1.x, line.p2.x);
-                size_t c_finish = std::max(line.p1.x, line.p2.x);
-                for (size_t r=r_start, c=c_start; (r <=r_finish) && (c <= c_finish); r++, c++) {
-                    table[r][c]++;
-                }
-            } else if (dx == -dy) {
-                size_t r_start = std::min(line.p1.y, line.p2.y);
-                size_t r_finish = std::max(line.p1.y, line.p2.y);
-                size_t c_start = std::max(line.p1.x, line.p2.x);
-                size_t c_finish = std::min(line.p1.x, line.p2.x);
-                for (size_t r=r_start, c=c_start; (r <=r_finish) && (c >= c_finish); r++, c--) {
-                    table[r][c]++;
-                }
-            } else {
-                std::cout << "WTF?" << std::endl;
-            }
-
-        }
-    }
-
-    size_t ans = 0;
-    for (size_t r = 0; r < table.size(); r++) {
-        for (size_t c = 0; c < table[r].size(); c++) {
-            if ( table[r][c] > 1) {
-                ans++;
-            }
-        }
-    }
+    if (ans != 21104)
+        std::cerr << "Wrong answer in day 05, part 2" << std::endl;
 
     std::cout << "[Task 2]" << " ans=" << ans << std::endl;
 }

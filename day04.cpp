@@ -1,25 +1,15 @@
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <sstream>
+#include "common.hpp"
+
 #include <numeric>
 
 
 #define BINGO_SIZE 5
 
-typedef std::vector<std::string> input_t;
-typedef std::vector<size_t> row_t;
-typedef std::vector<row_t> table_t;
+typedef std::vector<u32v_t> table_t;
 
-
-std::ostream& operator<<(std::ostream& out, const row_t& row) {
-    for (size_t i = 0; i < row.size(); i++) {
-        out << row[i] << " ";
-    }
-    return out;
-}
 
 struct Board {
+
     void prepare() {
         is_over = false;
 
@@ -63,7 +53,7 @@ struct Board {
 
         //  check rows
         for (size_t r = 0; r < marked.size(); r++) {
-            size_t row_sum = std::accumulate(marked[r].begin(), marked[r].end(), 0);
+            size_t row_sum = std::accumulate(marked[r].begin(), marked[r].end(), static_cast<size_t>(0));
             if ( row_sum == marked[r].size() ) {
                 is_win = true;
                 break;
@@ -71,14 +61,16 @@ struct Board {
         }
 
         // check columns
-        for (size_t c = 0; c < marked[0].size(); c++) {
-            size_t col_sum = 0;
-            for (size_t r = 0; r < marked.size(); r++) {
-                col_sum += static_cast<size_t>(marked[r][c]);
-            }
-            if ( col_sum == marked.size() ) {
-                is_win = true;
-                break;
+        if (!is_win) {
+            for (size_t c = 0; c < marked[0].size(); c++) {
+                size_t col_sum = 0;
+                for (size_t r = 0; r < marked.size(); r++) {
+                    col_sum += static_cast<size_t>(marked[r][c]);
+                }
+                if ( col_sum == marked.size() ) {
+                    is_win = true;
+                    break;
+                }
             }
         }
 
@@ -90,7 +82,7 @@ struct Board {
     }
 };
 
-typedef std::pair<row_t, std::vector<Board>> game_t;
+typedef std::pair<u32v_t, std::vector<Board>> game_t;
 typedef std::pair<Board, size_t> winner_t;
 
 std::ostream& operator<<(std::ostream& out, const Board& b) {
@@ -100,38 +92,8 @@ std::ostream& operator<<(std::ostream& out, const Board& b) {
     return out;
 }
 
-input_t load_input_from(const std::string& filepath) {
-    std::ifstream infile(filepath);
-    if ( !infile.is_open() ) {
-        std::cerr << "Cannot open input file: " << filepath << std::endl;
-        std::exit(1);
-    }
-
-    input_t result;
-    std::string line;
-    while (std::getline(infile, line)) {
-        result.push_back(line);
-    }
-    return result;
-}
-
-row_t split(const std::string& line, char delim) {
-    row_t result;
-    std::stringstream stream(line);
-    std::string item;
-
-    while (std::getline(stream, item, delim)) {
-        if (!item.size())
-            continue;
-        result.push_back(std::stoul(item));
-    }
-
-    return result;
-}
-
-
 game_t init_bingo(const input_t& input) {
-    row_t nums = split(input[0], ',');
+    u32v_t nums = split<uint32_t>(input[0], ',', s2u32);
 
     std::vector<Board> boards;
     Board b;
@@ -139,14 +101,17 @@ game_t init_bingo(const input_t& input) {
         if (input[i].size() == 0)
             continue;
 
-        row_t row = split(input[i], ' ');
+        u32v_t row = split<uint32_t>(input[i], ' ', s2u32);
         if ( b.table.size() == BINGO_SIZE ) {
+            b.prepare();
             boards.push_back(b);
             b = Board();
         }
         b.table.push_back(row);
     }
+    b.prepare();
     boards.push_back(b);
+
     return std::make_pair(nums, boards);
 }
 
@@ -187,6 +152,10 @@ void part_1(const input_t& input) {
     auto winner = play_1(game);
     size_t win_sum = winner.first.win_sum();
 
+    size_t ans = win_sum * winner.second;
+    if (ans != 44088)
+        std::cerr << "Wrong answer in day 04, part 1" << std::endl;
+
     std::cout << "[Task 1]" << " win_sum=" << win_sum << " last_num="<< winner.second << " ans=" << win_sum*winner.second << std::endl;
 }
 
@@ -197,6 +166,10 @@ void part_2(const input_t& input) {
     auto winner = play_2(game);
     size_t win_sum = winner.first.win_sum();
 
+    size_t ans = win_sum * winner.second;
+    if (ans != 23670)
+        std::cerr << "Wrong answer in day 04, part 2" << std::endl;
+
     std::cout << "[Task 2]" << " win_sum=" << win_sum << " last_num="<< winner.second << " ans=" << win_sum*winner.second << std::endl;
 }
 
@@ -205,7 +178,6 @@ int main() {
     // const std::string day_input("./inputs/day04_test.txt");
 
     auto input = load_input_from(day_input);
-    auto game = init_bingo(input);
 
     part_1(input);
     part_2(input);

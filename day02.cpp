@@ -1,31 +1,16 @@
-#include <iostream>
-#include <fstream>
-#include <vector>
+#include "common.hpp"
 
-
-typedef std::pair<std::string, int> inst_t;
+typedef std::pair<std::string, uint32_t> inst_t;
 typedef std::vector<inst_t> course_t;
 
-course_t load_course_from(const std::string& filepath) {
-    std::ifstream infile(filepath);
-    if ( !infile.is_open() ) {
-        std::cerr << "Cannot open input file: " << filepath << std::endl;
-        std::exit(1);
-    }
+auto s2inst = [](const std::string& s) -> inst_t {
+    input_t parts = split<std::string>(s, ' ');
+    return std::make_pair(parts[0], std::stoul(parts[1]));
+};
 
-    course_t result;
-    std::string line;
-    while (std::getline(infile, line)) {
-        size_t delim_idx = line.find(" ");
-        std::string dir = line.substr(0, delim_idx);
-        int delta = std::stoi(line.substr(delim_idx));
+void part_1(const input_t& input) {
+    course_t course = convert<inst_t>(input, s2inst);
 
-        result.push_back(std::make_pair(dir, delta));
-    }
-    return result;
-}
-
-void part_1(const course_t& course) {
     int hpos = 0;
     int depth = 0;
 
@@ -41,10 +26,17 @@ void part_1(const course_t& course) {
         }
     }
 
-    std::cout << "[Task 1] hpos = " << hpos << " depth = " << depth << " hpos*depth = " << hpos*depth << std::endl;
+    int ans = hpos * depth;
+
+    if (ans != 2091984)
+        std::cerr << "Wrong answer in day 02, part 1" << std::endl;
+
+    std::cout << "[Task 1] hpos = " << hpos << " depth = " << depth << " hpos*depth = " << ans << std::endl;
 }
 
-void part_2(const course_t& course) {
+void part_2(const input_t& input) {
+    course_t course = convert<inst_t>(input, s2inst);
+
     int hpos = 0;
     int depth = 0;
     int aim = 0;
@@ -62,16 +54,21 @@ void part_2(const course_t& course) {
         }
     }
 
-    std::cout << "[Task 2] hpos = " << hpos << " depth = " << depth << " aim = " << aim << " hpos*depth = " << hpos*depth << std::endl;
+    int ans = hpos * depth;
+
+    if (ans != 2086261056)
+        std::cerr << "Wrong answer in day 02, part 2" << std::endl;
+
+    std::cout << "[Task 2] hpos = " << hpos << " depth = " << depth << " aim = " << aim << " hpos*depth = " << ans << std::endl;
 }
 
 int main() {
     const std::string day_input("./inputs/day02_1.txt");
 
-    auto course = load_course_from(day_input);
+    auto input = load_input_from(day_input);
 
-    part_1(course);
-    part_2(course);
+    part_1(input);
+    part_2(input);
 
     return 0;
 }

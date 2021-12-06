@@ -2,6 +2,7 @@
 #define COMMON_HPP_
 
 #include <vector>
+#include <cassert>
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -13,6 +14,14 @@ typedef std::vector<uint64_t> u64v_t;
 typedef std::vector<uint32_t> u32v_t;
 typedef std::vector<int64_t> i64v_t;
 typedef std::vector<int32_t> i32v_t;
+
+template <typename T>
+void minmax(T v1, T v2, T& out_min, T& out_max) {
+    out_min = v1;
+    out_max = v2;
+    if (out_min > out_max)
+        std::swap(out_min, out_max);
+}
 
 template <typename T>
 std::ostream& operator<<(std::ostream& out, const std::vector<T>& row) {
@@ -43,17 +52,27 @@ auto s2u32 = [](const std::string& s) -> uint32_t { return std::stoul(s); };
 auto s2i32 = [](const std::string& s) -> int32_t { return std::stoi(s); };
 
 template <typename T>
-std::vector<T> split(const std::string& line, char delim, T (*convert)(const std::string&) = identical) {
+std::vector<T> split(const std::string& line, char delim, T (*s2t)(const std::string&) = identical) {
     std::vector<T> result;
     std::stringstream stream(line);
     std::string item;
 
     while (std::getline(stream, item, delim)) {
-        result.push_back(convert(item));
+        if (!item.size())
+            continue;
+        result.push_back(s2t(item));
     }
 
     return result;
 }
 
+template <typename T>
+std::vector<T> convert(const input_t& input, T (*s2t)(const std::string&)) {
+    std::vector<T> result;
+    for (const auto& s: input) {
+        result.push_back(s2t(s));
+    }
+    return result;
+}
 
 #endif // COMMON_HPP_

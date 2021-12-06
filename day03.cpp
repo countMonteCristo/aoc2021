@@ -1,28 +1,11 @@
-#include <iostream>
-#include <fstream>
-#include <vector>
+#include "common.hpp"
+
 #include <unordered_map>
 #include <cassert>
 
 
-typedef std::vector<std::string> input_t;
 typedef std::unordered_map<char, size_t> counter_t;
 
-
-input_t load_input_from(const std::string& filepath) {
-    std::ifstream infile(filepath);
-    if ( !infile.is_open() ) {
-        std::cerr << "Cannot open input file: " << filepath << std::endl;
-        std::exit(1);
-    }
-
-    input_t result;
-    std::string line;
-    while (std::getline(infile, line)) {
-        result.push_back(line);
-    }
-    return result;
-}
 
 counter_t counter(const input_t& input, size_t idx) {
     counter_t result;
@@ -31,29 +14,6 @@ counter_t counter(const input_t& input, size_t idx) {
     }
     return result;
 }
-
-void part_1(const input_t& input) {
-    std::string gamma_str;
-    std::string epsilon_str;
-
-    for (size_t idx = 0; idx < input[0].size(); idx++) {
-        const counter_t cnt = counter(input, idx);
-
-        char g_char = '1';
-        char e_char = '0';
-        if (cnt.at('0') > cnt.at('1'))
-            std::swap(g_char, e_char);
-
-        gamma_str.push_back(g_char);
-        epsilon_str.push_back(e_char);
-    }
-
-    size_t gamma = std::stoul(gamma_str, nullptr, 2);
-    size_t epsilon = std::stoul(epsilon_str, nullptr, 2);
-
-    std::cout << "[Task 1]" << " gamma=" << gamma << " epsilon=" << epsilon << " answer=" << gamma * epsilon << std::endl;
-}
-
 
 size_t filter(const input_t& input, char (*func)(const counter_t& cnt)) {
     input_t current(input);
@@ -77,6 +37,33 @@ size_t filter(const input_t& input, char (*func)(const counter_t& cnt)) {
     return result;
 }
 
+void part_1(const input_t& input) {
+    std::string gamma_str;
+    std::string epsilon_str;
+
+    for (size_t idx = 0; idx < input[0].size(); idx++) {
+        const counter_t cnt = counter(input, idx);
+
+        char g_char = '1';
+        char e_char = '0';
+        if (cnt.at('0') > cnt.at('1'))
+            std::swap(g_char, e_char);
+
+        gamma_str.push_back(g_char);
+        epsilon_str.push_back(e_char);
+    }
+
+    size_t gamma = std::stoul(gamma_str, nullptr, 2);
+    size_t epsilon = std::stoul(epsilon_str, nullptr, 2);
+
+    int ans = gamma * epsilon;
+
+    if (ans != 3813416)
+        std::cerr << "Wrong answer in day 03, part 1" << std::endl;
+
+    std::cout << "[Task 1]" << " gamma=" << gamma << " epsilon=" << epsilon << " answer=" << ans << std::endl;
+}
+
 void part_2(const input_t& input) {
 
     auto oxy_crit = [](const counter_t& cnt) { return (cnt.at('0') > cnt.at('1'))? '0': '1'; };
@@ -84,7 +71,12 @@ void part_2(const input_t& input) {
     size_t oxy = filter(input, oxy_crit);
     size_t co2 = filter(input, co2_crit);
 
-    std::cout << "[Task 2]" << " oxy=" << oxy << " co2=" << co2 << " answer=" << oxy*co2 << std::endl;
+    int ans = oxy * co2;
+
+    if (ans != 2990784)
+        std::cerr << "Wrong answer in day 03, part 2" << std::endl;
+
+    std::cout << "[Task 2]" << " oxy=" << oxy << " co2=" << co2 << " answer=" << ans << std::endl;
 }
 
 int main() {
