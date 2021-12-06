@@ -15,3 +15,6 @@ day04: day04.cpp
 
 day05: day05.cpp
 	${CXX} ${CXXFLAGS} day05.cpp -o day05
+
+day06: day06.cpp
+	${CXX} ${CXXFLAGS} day06.cpp -o day06
