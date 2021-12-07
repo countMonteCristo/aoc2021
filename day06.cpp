@@ -29,6 +29,10 @@ uint64_t sim(const u64v_t& initial, size_t N, uint8_t new_default, uint8_t old_d
 void part_1(const input_t& input) {
     u64v_t initial = split<uint64_t>(input[0], ',', s2u64);
     size_t ans = sim(initial, 80, 8, 6);
+
+    if (ans != 365131)
+        std::cerr << "Wrong answer in Day 06 Part 1" << std::endl;
+
     std::cout << "[Task 1]" << " ans=" << ans << std::endl;
 }
 
@@ -36,6 +40,10 @@ void part_1(const input_t& input) {
 void part_2(const input_t& input) {
     u64v_t initial = split<uint64_t>(input[0], ',', s2u64);
     size_t ans = sim(initial, 256, 8, 6);
+
+    if (ans != 1650309278600)
+        std::cerr << "Wrong answer in Day 06 Part 2" << std::endl;
+
     std::cout << "[Task 2]" << " ans=" << ans << std::endl;
 }
 

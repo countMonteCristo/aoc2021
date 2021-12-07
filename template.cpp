@@ -1,40 +1,30 @@
-#include <iostream>
-#include <fstream>
-#include <vector>
-
-
-typedef std::vector<std::string> input_t;
-
-
-input_t load_input_from(const std::string& filepath) {
-    std::ifstream infile(filepath);
-    if ( !infile.is_open() ) {
-        std::cerr << "Cannot open input file: " << filepath << std::endl;
-        std::exit(1);
-    }
-
-    input_t result;
-    std::string line;
-    while (std::getline(infile, line)) {
-        result.push_back(line);
-    }
-    return result;
-}
+#include "common.hpp"
 
 
 void part_1(const input_t& input) {
 
-    std::cout << "[Task 1]" << std::endl;
+    uint32_t ans = 0;
+
+    if (ans != 1)
+        std::cerr << "Wrong answer in Day <%DAY> Part 1" << std::endl;
+
+    std::cout << "[Task 1]" << " ans=" << ans << std::endl;
 }
 
 
 void part_2(const input_t& input) {
 
-    std::cout << "[Task 2]" << std::endl;
+    uint32_t ans = 0;
+
+    if (ans != 1)
+        std::cerr << "Wrong answer in Day <%DAY> Part 2" << std::endl;
+
+    std::cout << "[Task 2]" << " ans=" << ans << std::endl;
 }
 
 int main() {
     const std::string day_input("./inputs/day<%DAY>_1.txt");
+    // const std::string day_input("./inputs/day<%DAY>_test.txt");
 
     auto input = load_input_from(day_input);
 
