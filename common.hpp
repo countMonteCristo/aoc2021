@@ -46,6 +46,10 @@ input_t load_input_from(const std::string& filepath) {
     return result;
 }
 
+bool contains(const std::string& s, char c) {
+    return (s.find(c) != std::string::npos);
+}
+
 auto identical = [](const std::string& s) -> std::string { return s; };
 auto s2u64 = [](const std::string& s) -> uint64_t { return std::stoull(s); };
 auto s2u32 = [](const std::string& s) -> uint32_t { return std::stoul(s); };
