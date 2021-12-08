@@ -3,14 +3,14 @@
 #include <unordered_map>
 
 
-typedef std::pair<input_t, input_t> task_t;
+typedef std::pair<aoc::input_t, aoc::input_t> task_t;
 typedef std::vector<task_t> result_t;
 
-void part_1(const input_t& input) {
+void part_1(const aoc::input_t& input) {
     uint32_t ans = 0;
 
     for (const auto& line: input) {
-        input_t parts = split<std::string>(line, ' ');
+        aoc::input_t parts = aoc::split(line, ' ');
         auto delim = std::find(parts.begin(), parts.end(), "|");
         ++delim;
         for (; delim != parts.end(); ++delim) {
@@ -34,7 +34,7 @@ uint32_t decode(const task_t& task) {
     };
 
     // determine 1, 4, 7, 8
-    input_t six_segment_digits, five_segment_digits;
+    aoc::input_t six_segment_digits, five_segment_digits;
     for (const auto& digit: task.first) {
         size_t size = digit.size();
         switch (size) {
@@ -52,7 +52,7 @@ uint32_t decode(const task_t& task) {
 
     // determine digit '6'
     for (const std::string& six_candidate: six_segment_digits) {
-        if (!contains(six_candidate, one[0]) || !contains(six_candidate, one[1])) {
+        if (!aoc::contains(six_candidate, one[0]) || !aoc::contains(six_candidate, one[1])) {
             digits[6] = six_candidate;
             break;
         }
@@ -61,7 +61,7 @@ uint32_t decode(const task_t& task) {
 
     // get wire for 'c'
     for (char c: eight) {
-        if (!contains(six, c)) {
+        if (!aoc::contains(six, c)) {
             wires['c'] = c;
             break;
         }
@@ -74,7 +74,7 @@ uint32_t decode(const task_t& task) {
     for (const auto& five_candidate: five_segment_digits) {
         std::vector<char> not_found_chars;
         for (char c: six) {
-            if (!contains(five_candidate, c)) not_found_chars.push_back(c);
+            if (!aoc::contains(five_candidate, c)) not_found_chars.push_back(c);
         }
         if (not_found_chars.size() == 1) {
             digits[5] = five_candidate;
@@ -87,7 +87,7 @@ uint32_t decode(const task_t& task) {
     // get digits '0' and '9'
     for (const auto& zero_or_nine: six_segment_digits) {
         if (zero_or_nine == six) continue;
-        if (!contains(zero_or_nine, wires['e'])) {
+        if (!aoc::contains(zero_or_nine, wires['e'])) {
             digits[9] = zero_or_nine;
         } else {
             digits[0] = zero_or_nine;
@@ -97,7 +97,7 @@ uint32_t decode(const task_t& task) {
     // get digits '2' and '3'
     for (const auto& two_or_three: five_segment_digits) {
         if (two_or_three == five) continue;
-        if (!contains(two_or_three,  wires['f'])) {
+        if (!aoc::contains(two_or_three,  wires['f'])) {
             digits[2] = two_or_three;
         } else {
             digits[3] = two_or_three;
@@ -119,13 +119,13 @@ uint32_t decode(const task_t& task) {
     return res;
 }
 
-void part_2(const input_t& input) {
+void part_2(const aoc::input_t& input) {
     uint32_t ans = 0;
 
     result_t result;
 
     for (const auto& line: input) {
-        input_t parts = split<std::string>(line, ' ');
+        aoc::input_t parts = aoc::split(line, ' ');
         task_t task;
         auto delim = std::find(parts.begin(), parts.end(), "|");
         for (auto it = parts.begin(); it != delim; ++it) {
@@ -156,7 +156,7 @@ int main() {
     const std::string day_input("./inputs/day08_1.txt");
     // const std::string day_input("./inputs/day08_test.txt");
 
-    auto input = load_input_from(day_input);
+    auto input = aoc::load_input_from(day_input);
 
     part_1(input);
     part_2(input);

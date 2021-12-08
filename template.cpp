@@ -1,7 +1,7 @@
 #include "common.hpp"
 
 
-void part_1(const input_t& input) {
+void part_1(const aoc::input_t& input) {
 
     uint32_t ans = 0;
 
@@ -12,7 +12,7 @@ void part_1(const input_t& input) {
 }
 
 
-void part_2(const input_t& input) {
+void part_2(const aoc::input_t& input) {
 
     uint32_t ans = 0;
 
@@ -26,7 +26,7 @@ int main() {
     const std::string day_input("./inputs/day<%DAY>_1.txt");
     // const std::string day_input("./inputs/day<%DAY>_test.txt");
 
-    auto input = load_input_from(day_input);
+    auto input = aoc::load_input_from(day_input);
 
     part_1(input);
     part_2(input);

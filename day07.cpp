@@ -1,8 +1,8 @@
 #include "common.hpp"
 
 
-void part_1(const input_t& input) {
-    u32v_t pos = split<uint32_t>(input[0], ',', s2u32);
+void part_1(const aoc::input_t& input) {
+    aoc::u32v_t pos = aoc::convert<uint32_t>(aoc::split(input[0], ','), aoc::s2u32);
     std::sort(pos.begin(), pos.end());
 
     uint32_t ans = 0;
@@ -20,11 +20,11 @@ inline uint32_t cost(uint32_t n) {
     return n * (n + 1) / 2;
 }
 
-uint32_t bruteforce(const u32v_t pos) {
+uint32_t bruteforce(const aoc::u32v_t pos) {
     uint32_t min = pos.front();
     uint32_t max = pos.back();
 
-    u32v_t result(max - min + 1, 0);
+    aoc::u32v_t result(max - min + 1, 0);
     for (uint32_t x = min; x <= max; x++) {
         uint32_t sum = 0;
         for (auto n: pos) {
@@ -38,8 +38,8 @@ uint32_t bruteforce(const u32v_t pos) {
     return result[0];
 }
 
-void part_2(const input_t& input) {
-    u32v_t pos = split<uint32_t>(input[0], ',', s2u32);
+void part_2(const aoc::input_t& input) {
+    aoc::u32v_t pos = aoc::convert<uint32_t>(aoc::split(input[0], ','), aoc::s2u32);
     std::sort(pos.begin(), pos.end());
 
     uint32_t ans = bruteforce(pos);
@@ -54,7 +54,7 @@ int main() {
     const std::string day_input("./inputs/day07_1.txt");
     // const std::string day_input("./inputs/day07_test.txt");
 
-    auto input = load_input_from(day_input);
+    auto input = aoc::load_input_from(day_input);
 
     part_1(input);
     part_2(input);

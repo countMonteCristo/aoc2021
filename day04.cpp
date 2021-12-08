@@ -5,7 +5,7 @@
 
 #define BINGO_SIZE 5
 
-typedef std::vector<u32v_t> table_t;
+typedef std::vector<aoc::u32v_t> table_t;
 
 
 struct Board {
@@ -82,7 +82,7 @@ struct Board {
     }
 };
 
-typedef std::pair<u32v_t, std::vector<Board>> game_t;
+typedef std::pair<aoc::u32v_t, std::vector<Board>> game_t;
 typedef std::pair<Board, size_t> winner_t;
 
 std::ostream& operator<<(std::ostream& out, const Board& b) {
@@ -92,8 +92,8 @@ std::ostream& operator<<(std::ostream& out, const Board& b) {
     return out;
 }
 
-game_t init_bingo(const input_t& input) {
-    u32v_t nums = split<uint32_t>(input[0], ',', s2u32);
+game_t init_bingo(const aoc::input_t& input) {
+    aoc::u32v_t nums = aoc::convert<uint32_t>(aoc::split(input[0], ','), aoc::s2u32);
 
     std::vector<Board> boards;
     Board b;
@@ -101,7 +101,7 @@ game_t init_bingo(const input_t& input) {
         if (input[i].size() == 0)
             continue;
 
-        u32v_t row = split<uint32_t>(input[i], ' ', s2u32);
+        aoc::u32v_t row = aoc::convert<uint32_t>(aoc::split(input[i], ' '), aoc::s2u32);
         if ( b.table.size() == BINGO_SIZE ) {
             b.prepare();
             boards.push_back(b);
@@ -146,7 +146,7 @@ winner_t play_2(game_t& game) {
 }
 
 
-void part_1(const input_t& input) {
+void part_1(const aoc::input_t& input) {
     auto game = init_bingo(input);
 
     auto winner = play_1(game);
@@ -160,7 +160,7 @@ void part_1(const input_t& input) {
 }
 
 
-void part_2(const input_t& input) {
+void part_2(const aoc::input_t& input) {
     auto game = init_bingo(input);
 
     auto winner = play_2(game);
@@ -177,7 +177,7 @@ int main() {
     const std::string day_input("./inputs/day04_1.txt");
     // const std::string day_input("./inputs/day04_test.txt");
 
-    auto input = load_input_from(day_input);
+    auto input = aoc::load_input_from(day_input);
 
     part_1(input);
     part_2(input);

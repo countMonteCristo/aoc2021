@@ -15,20 +15,20 @@ struct Line {
 };
 
 auto s2point = [](const std::string& s) {
-    input_t sub = split<std::string>(s, ',');
-    return Point(s2u32(sub[0]), s2u32(sub[1]));
+    aoc::input_t sub = aoc::split(s, ',');
+    return Point(aoc::s2u32(sub[0]), aoc::s2u32(sub[1]));
 };
 
 auto s2line = [](const std::string& s) {
-    input_t sub = split<std::string>(s, ' ');
+    aoc::input_t sub = aoc::split(s, ' ');
     return Line(s2point(sub[0]), s2point(sub[2]));
 };
 
 typedef std::vector<Line> lines_t;
 
 struct Table {
-    Table(const input_t& input) : width(0), height(0) {
-        lines = convert<Line>(input, s2line);
+    Table(const aoc::input_t& input) : width(0), height(0) {
+        lines = aoc::convert<Line>(input, s2line);
         _init_size();
 
         field.resize(height);
@@ -38,7 +38,7 @@ struct Table {
     }
 
     lines_t lines;
-    std::vector<u32v_t> field;
+    std::vector<aoc::u32v_t> field;
     uint32_t width;
     uint32_t height;
 
@@ -59,12 +59,12 @@ struct Table {
 
         for (const auto& line: lines) {
             if (line.p1.x == line.p2.x) {           // vertical
-                minmax(line.p1.y, line.p2.y, start, finish);
+                aoc::minmax(line.p1.y, line.p2.y, start, finish);
                 for (size_t r = start; r <= finish; r++) {
                     field[r][line.p1.x]++;
                 }
             } else if (line.p1.y == line.p2.y) {    // horizontal
-                minmax(line.p1.x, line.p2.x, start, finish);
+                aoc::minmax(line.p1.x, line.p2.x, start, finish);
                 for (size_t c = start; c <= finish; c++) {
                     field[line.p1.y][c]++;
                 }
@@ -73,11 +73,11 @@ struct Table {
                 int dx = line.p2.x - line.p1.x;
                 int dy = line.p2.y - line.p1.y;
 
-                minmax(line.p1.y, line.p2.y, r_start, r_finish);
-                minmax(line.p1.x, line.p2.x, c_start, c_finish);
+                aoc::minmax(line.p1.y, line.p2.y, r_start, r_finish);
+                aoc::minmax(line.p1.x, line.p2.x, c_start, c_finish);
 
                 if (dx == dy) {
-                    minmax(line.p1.x, line.p2.x, c_start, c_finish);
+                    aoc::minmax(line.p1.x, line.p2.x, c_start, c_finish);
                     for (size_t r=r_start, c=c_start; (r <=r_finish) && (c <= c_finish); r++, c++) {
                         field[r][c]++;
                     }
@@ -107,7 +107,7 @@ struct Table {
     }
 };
 
-void part_1(const input_t& input) {
+void part_1(const aoc::input_t& input) {
     Table table(input);
     table.process();
     size_t ans = table.ans();
@@ -119,7 +119,7 @@ void part_1(const input_t& input) {
 }
 
 
-void part_2(const input_t& input) {
+void part_2(const aoc::input_t& input) {
     Table table(input);
     table.process(true);
     size_t ans = table.ans();
@@ -133,7 +133,7 @@ void part_2(const input_t& input) {
 int main() {
     const std::string day_input("./inputs/day05_1.txt");
 
-    auto input = load_input_from(day_input);
+    auto input = aoc::load_input_from(day_input);
 
     part_1(input);
     part_2(input);

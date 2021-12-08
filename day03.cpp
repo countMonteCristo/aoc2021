@@ -7,7 +7,7 @@
 typedef std::unordered_map<char, size_t> counter_t;
 
 
-counter_t counter(const input_t& input, size_t idx) {
+counter_t counter(const aoc::input_t& input, size_t idx) {
     counter_t result;
     for (const auto& line: input) {
         result[line[idx]]++;
@@ -15,13 +15,13 @@ counter_t counter(const input_t& input, size_t idx) {
     return result;
 }
 
-size_t filter(const input_t& input, char (*func)(const counter_t& cnt)) {
-    input_t current(input);
+size_t filter(const aoc::input_t& input, char (*func)(const counter_t& cnt)) {
+    aoc::input_t current(input);
     size_t idx = 0;
     while (current.size() > 1) {
         const counter_t counts = counter(current, idx);
         char criteria = func(counts);
-        input_t next;
+        aoc::input_t next;
         for (const auto& line: current) {
             if (line[idx] == criteria) {
                 next.push_back(line);
@@ -37,7 +37,7 @@ size_t filter(const input_t& input, char (*func)(const counter_t& cnt)) {
     return result;
 }
 
-void part_1(const input_t& input) {
+void part_1(const aoc::input_t& input) {
     std::string gamma_str;
     std::string epsilon_str;
 
@@ -64,7 +64,7 @@ void part_1(const input_t& input) {
     std::cout << "[Task 1]" << " gamma=" << gamma << " epsilon=" << epsilon << " answer=" << ans << std::endl;
 }
 
-void part_2(const input_t& input) {
+void part_2(const aoc::input_t& input) {
 
     auto oxy_crit = [](const counter_t& cnt) { return (cnt.at('0') > cnt.at('1'))? '0': '1'; };
     auto co2_crit = [](const counter_t& cnt) { return (cnt.at('0') <= cnt.at('1'))? '0': '1'; };
@@ -82,7 +82,7 @@ void part_2(const input_t& input) {
 int main() {
     const std::string day_input("./inputs/day03_1.txt");
 
-    auto input = load_input_from(day_input);
+    auto input = aoc::load_input_from(day_input);
 
     part_1(input);
     part_2(input);

@@ -4,12 +4,12 @@ typedef std::pair<std::string, uint32_t> inst_t;
 typedef std::vector<inst_t> course_t;
 
 auto s2inst = [](const std::string& s) -> inst_t {
-    input_t parts = split<std::string>(s, ' ');
+    aoc::input_t parts = aoc::split(s, ' ');
     return std::make_pair(parts[0], std::stoul(parts[1]));
 };
 
-void part_1(const input_t& input) {
-    course_t course = convert<inst_t>(input, s2inst);
+void part_1(const aoc::input_t& input) {
+    course_t course = aoc::convert<inst_t>(input, s2inst);
 
     int hpos = 0;
     int depth = 0;
@@ -34,8 +34,8 @@ void part_1(const input_t& input) {
     std::cout << "[Task 1] hpos = " << hpos << " depth = " << depth << " hpos*depth = " << ans << std::endl;
 }
 
-void part_2(const input_t& input) {
-    course_t course = convert<inst_t>(input, s2inst);
+void part_2(const aoc::input_t& input) {
+    course_t course = aoc::convert<inst_t>(input, s2inst);
 
     int hpos = 0;
     int depth = 0;
@@ -65,7 +65,7 @@ void part_2(const input_t& input) {
 int main() {
     const std::string day_input("./inputs/day02_1.txt");
 
-    auto input = load_input_from(day_input);
+    auto input = aoc::load_input_from(day_input);
 
     part_1(input);
     part_2(input);
