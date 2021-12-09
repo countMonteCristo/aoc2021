@@ -12,8 +12,12 @@ namespace aoc {
     typedef std::vector<std::string> input_t;
     typedef std::vector<uint64_t> u64v_t;
     typedef std::vector<uint32_t> u32v_t;
+    typedef std::vector<uint16_t> u16v_t;
+    typedef std::vector<uint8_t> u8v_t;
     typedef std::vector<int64_t> i64v_t;
     typedef std::vector<int32_t> i32v_t;
+    typedef std::vector<int16_t> i16v_t;
+    typedef std::vector<int8_t> i8v_t;
 
     template <typename T>
     void minmax(T v1, T v2, T& out_min, T& out_max) {

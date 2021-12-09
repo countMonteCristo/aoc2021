@@ -37,3 +37,6 @@ day07: day07.cpp
 
 day08: day08.cpp
 	${CXX} ${CXXFLAGS} day08.cpp -o day08
+
+day09: day09.cpp
+	${CXX} ${CXXFLAGS} day09.cpp -o day09
