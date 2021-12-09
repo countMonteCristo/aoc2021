@@ -10,7 +10,7 @@ void part_1(const aoc::input_t& input) {
     uint32_t ans = 0;
 
     for (const auto& line: input) {
-        aoc::input_t parts = aoc::split(line, ' ');
+        auto parts = aoc::split(line, ' ');
         auto delim = std::find(parts.begin(), parts.end(), "|");
         ++delim;
         for (; delim != parts.end(); ++delim) {
@@ -125,7 +125,7 @@ void part_2(const aoc::input_t& input) {
     result_t result;
 
     for (const auto& line: input) {
-        aoc::input_t parts = aoc::split(line, ' ');
+        auto parts = aoc::split(line, ' ');
         task_t task;
         auto delim = std::find(parts.begin(), parts.end(), "|");
         for (auto it = parts.begin(); it != delim; ++it) {

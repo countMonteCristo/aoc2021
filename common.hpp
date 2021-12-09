@@ -75,9 +75,8 @@ namespace aoc {
         return result;
     }
 
-    template <typename Converter>
-    auto convert(const input_t& input, Converter s2t) {
-        assert(input.size());
+    template <typename C>
+    auto convert(const input_t& input, C s2t) {
         using T = std::decay_t<decltype(s2t(input[0]))>;
 
         std::vector<T> result;

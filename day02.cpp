@@ -4,7 +4,7 @@ typedef std::pair<std::string, uint32_t> inst_t;
 typedef std::vector<inst_t> course_t;
 
 auto s2inst = [](const std::string& s) -> inst_t {
-    aoc::input_t parts = aoc::split(s, ' ');
+    auto parts = aoc::split(s, ' ');
     return std::make_pair(parts[0], std::stoul(parts[1]));
 };
 

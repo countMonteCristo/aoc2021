@@ -12,7 +12,7 @@ size_t get_increase_count(const aoc::i32v_t& depths, size_t window) {
 }
 
 void part_1(const aoc::input_t& input) {
-    aoc::i32v_t depths = aoc::convert(input, aoc::s2i32);
+    auto depths = aoc::convert(input, +aoc::s2i32);
     size_t count = get_increase_count(depths, 1);
 
     if (count != 1301)
@@ -22,7 +22,7 @@ void part_1(const aoc::input_t& input) {
 }
 
 void part_2(const aoc::input_t& input) {
-    aoc::i32v_t depths = aoc::convert(input, aoc::s2i32);
+    auto depths = aoc::convert(input, +aoc::s2i32);
     size_t count = get_increase_count(depths, 3);
 
     if (count != 1346)

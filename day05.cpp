@@ -14,13 +14,13 @@ struct Line {
     Point p2;
 };
 
-auto s2point = [](const std::string& s) {
-    aoc::input_t sub = aoc::split(s, ',');
+auto s2point = [](const std::string& s) -> Point {
+    auto sub = aoc::split(s, ',');
     return Point(aoc::s2u32(sub[0]), aoc::s2u32(sub[1]));
 };
 
-auto s2line = [](const std::string& s) {
-    aoc::input_t sub = aoc::split(s, ' ');
+auto s2line = [](const std::string& s) -> Line {
+    auto sub = aoc::split(s, ' ');
     return Line(s2point(sub[0]), s2point(sub[2]));
 };
 

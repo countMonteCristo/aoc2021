@@ -27,7 +27,7 @@ uint64_t sim(const aoc::u64v_t& initial, size_t N, uint8_t new_default, uint8_t 
 }
 
 void part_1(const aoc::input_t& input) {
-    aoc::u64v_t initial = aoc::convert(aoc::split(input[0], ','), aoc::s2u64);
+    auto initial = aoc::convert(aoc::split(input[0], ','), aoc::s2u64);
     size_t ans = sim(initial, 80, 8, 6);
 
     if (ans != 365131)
@@ -38,7 +38,7 @@ void part_1(const aoc::input_t& input) {
 
 
 void part_2(const aoc::input_t& input) {
-    aoc::u64v_t initial = aoc::convert(aoc::split(input[0], ','), aoc::s2u64);
+    auto initial = aoc::convert(aoc::split(input[0], ','), aoc::s2u64);
     size_t ans = sim(initial, 256, 8, 6);
 
     if (ans != 1650309278600)
