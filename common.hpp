@@ -75,8 +75,11 @@ namespace aoc {
         return result;
     }
 
-    template <typename T>
-    std::vector<T> convert(const input_t& input, T (*s2t)(const std::string&)) {
+    template <typename Converter>
+    auto convert(const input_t& input, Converter s2t) {
+        assert(input.size());
+        using T = std::decay_t<decltype(s2t(input[0]))>;
+
         std::vector<T> result;
         for (const auto& s: input) {
             result.push_back(s2t(s));
@@ -87,8 +90,8 @@ namespace aoc {
 
 template <typename T>
 std::ostream& operator<<(std::ostream& out, const std::vector<T>& row) {
-    for (size_t i = 0; i < row.size(); i++) {
-        out << row[i] << " ";
+    for (const auto& item: row) {
+        out << item << " ";
     }
     return out;
 }

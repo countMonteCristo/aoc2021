@@ -28,7 +28,7 @@ typedef std::vector<Line> lines_t;
 
 struct Table {
     Table(const aoc::input_t& input) : width(0), height(0) {
-        lines = aoc::convert<Line>(input, s2line);
+        lines = aoc::convert(input, s2line);
         _init_size();
 
         field.resize(height);

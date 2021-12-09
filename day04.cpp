@@ -93,7 +93,7 @@ std::ostream& operator<<(std::ostream& out, const Board& b) {
 }
 
 game_t init_bingo(const aoc::input_t& input) {
-    aoc::u32v_t nums = aoc::convert<uint32_t>(aoc::split(input[0], ','), aoc::s2u32);
+    aoc::u32v_t nums = aoc::convert(aoc::split(input[0], ','), aoc::s2u32);
 
     std::vector<Board> boards;
     Board b;
@@ -101,7 +101,7 @@ game_t init_bingo(const aoc::input_t& input) {
         if (input[i].size() == 0)
             continue;
 
-        aoc::u32v_t row = aoc::convert<uint32_t>(aoc::split(input[i], ' '), aoc::s2u32);
+        aoc::u32v_t row = aoc::convert(aoc::split(input[i], ' '), aoc::s2u32);
         if ( b.table.size() == BINGO_SIZE ) {
             b.prepare();
             boards.push_back(b);

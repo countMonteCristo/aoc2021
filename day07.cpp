@@ -2,7 +2,7 @@
 
 
 void part_1(const aoc::input_t& input) {
-    aoc::u32v_t pos = aoc::convert<uint32_t>(aoc::split(input[0], ','), aoc::s2u32);
+    aoc::u32v_t pos = aoc::convert(aoc::split(input[0], ','), aoc::s2u32);
     std::sort(pos.begin(), pos.end());
 
     uint32_t ans = 0;
@@ -39,7 +39,7 @@ uint32_t bruteforce(const aoc::u32v_t pos) {
 }
 
 void part_2(const aoc::input_t& input) {
-    aoc::u32v_t pos = aoc::convert<uint32_t>(aoc::split(input[0], ','), aoc::s2u32);
+    aoc::u32v_t pos = aoc::convert(aoc::split(input[0], ','), aoc::s2u32);
     std::sort(pos.begin(), pos.end());
 
     uint32_t ans = bruteforce(pos);

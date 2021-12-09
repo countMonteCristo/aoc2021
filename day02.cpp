@@ -9,7 +9,7 @@ auto s2inst = [](const std::string& s) -> inst_t {
 };
 
 void part_1(const aoc::input_t& input) {
-    course_t course = aoc::convert<inst_t>(input, s2inst);
+    course_t course = aoc::convert(input, s2inst);
 
     int hpos = 0;
     int depth = 0;
@@ -35,7 +35,7 @@ void part_1(const aoc::input_t& input) {
 }
 
 void part_2(const aoc::input_t& input) {
-    course_t course = aoc::convert<inst_t>(input, s2inst);
+    course_t course = aoc::convert(input, s2inst);
 
     int hpos = 0;
     int depth = 0;
