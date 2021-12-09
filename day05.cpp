@@ -38,7 +38,7 @@ struct Table {
     }
 
     lines_t lines;
-    std::vector<aoc::u32v_t> field;
+    aoc::u32v2_t field;
     uint32_t width;
     uint32_t height;
 

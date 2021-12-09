@@ -5,7 +5,7 @@
 
 #define BINGO_SIZE 5
 
-typedef std::vector<aoc::u32v_t> table_t;
+typedef aoc::u32v2_t table_t;
 
 
 struct Board {

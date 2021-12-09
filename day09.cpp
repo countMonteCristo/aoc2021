@@ -6,6 +6,7 @@ constexpr uint8_t MAX_HEIGHT = 9;
 typedef std::pair<int, int> coord_t;
 typedef std::vector<coord_t> coords_t;
 typedef aoc::u32v_t basin_t;
+typedef aoc::u8v2_t table_t;
 
 coords_t neighbours(const coord_t& point, int width, int height) {
     coords_t result;
@@ -20,7 +21,7 @@ coords_t neighbours(const coord_t& point, int width, int height) {
     return result;
 }
 
-void fill_basin(std::vector<aoc::u8v_t>& heights, const coord_t& point, basin_t& basins) {
+void fill_basin(table_t& heights, const coord_t& point, basin_t& basins) {
     coords_t basin;
     basin.push_back(point);
     auto& [pc, pr] = point;
@@ -47,7 +48,7 @@ void fill_basin(std::vector<aoc::u8v_t>& heights, const coord_t& point, basin_t&
 
 void part_1(const aoc::input_t& input) {
 
-    std::vector<aoc::u8v_t> heights(input.size(), aoc::u8v_t(input[0].size(), 0));
+    table_t heights(input.size(), aoc::u8v_t(input[0].size(), 0));
     for (size_t r = 0; r < input.size(); r++) {
         for (size_t c = 0; c < input[r].size(); c++) {
             heights[r][c] = static_cast<uint8_t>(input[r][c] - '0');
@@ -80,7 +81,7 @@ void part_1(const aoc::input_t& input) {
 
 void part_2(const aoc::input_t& input) {
 
-    std::vector<aoc::u8v_t> heights(input.size(), aoc::u8v_t(input[0].size(), 0));
+    table_t heights(input.size(), aoc::u8v_t(input[0].size(), 0));
     for (size_t r = 0; r < input.size(); r++) {
         for (size_t c = 0; c < input[r].size(); c++) {
             heights[r][c] = static_cast<uint8_t>(input[r][c] - '0');
