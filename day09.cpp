@@ -1,40 +1,23 @@
 #include "common.hpp"
 
-constexpr uint8_t MAX_HEIGHT = 9;
-
-
-typedef std::pair<int, int> coord_t;
-typedef std::vector<coord_t> coords_t;
 typedef aoc::u32v_t basin_t;
 typedef aoc::u8v2_t table_t;
 
-coords_t neighbours(const coord_t& point, int width, int height) {
-    coords_t result;
-    auto& [x, y] = point;
-    coords_t all = {{x-1, y}, {x+1, y}, {x, y-1}, {x, y+1}};
-    for (const auto& n: all) {
-        auto& [nx, ny] = n;
-        if ((nx < 0) || (nx == width) || (ny < 0) || (ny == height))
-            continue;
-        result.push_back(n);
-    }
-    return result;
-}
 
-void fill_basin(table_t& heights, const coord_t& point, basin_t& basins) {
-    coords_t basin;
+void fill_basin(table_t& heights, const aoc::coord_t& point, basin_t& basins) {
+    aoc::coords_t basin;
     basin.push_back(point);
     auto& [pc, pr] = point;
-    heights[pr][pc] = MAX_HEIGHT;
+    heights[pr][pc] = aoc::MAX_DIGIT;
     while (true) {
-        coords_t candidates;
+        aoc::coords_t candidates;
         for (const auto& p: basin) {
-            auto all_nbrs = neighbours(p, heights[0].size(), heights.size());
+            auto all_nbrs = aoc::neighbours(p, heights[0].size(), heights.size(), aoc::Nbh::VonNeumann);
             for (const auto& n: all_nbrs) {
                 auto& [c, r] = n;
-                if (heights[r][c] != MAX_HEIGHT) {
+                if (heights[r][c] != aoc::MAX_DIGIT) {
                     candidates.push_back(n);
-                    heights[r][c] = MAX_HEIGHT;
+                    heights[r][c] = aoc::MAX_DIGIT;
                 }
             }
         }
@@ -58,7 +41,7 @@ void part_1(const aoc::input_t& input) {
     uint32_t ans = 0;
     for (size_t r = 0; r < heights.size(); r++) {
         for (size_t c = 0; c < heights[r].size(); c++) {
-            const auto nbrs = neighbours({c, r}, heights[0].size(), heights.size());
+            const auto nbrs = aoc::neighbours({c, r}, heights[0].size(), heights.size(), aoc::Nbh::VonNeumann);
 
             size_t count = 0;
             for (const auto& n: nbrs) {
@@ -91,7 +74,7 @@ void part_2(const aoc::input_t& input) {
     basin_t basins;
     for (size_t r = 0; r < heights.size(); r++) {
         for (size_t c = 0; c < heights[r].size(); c++) {
-            if (heights[r][c] != MAX_HEIGHT) {
+            if (heights[r][c] != aoc::MAX_DIGIT) {
                 fill_basin(heights, {c, r}, basins);
             }
         }

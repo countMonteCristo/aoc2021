@@ -28,6 +28,50 @@ namespace aoc {
     typedef std::vector<i32v_t> i32v2_t;
     typedef std::vector<i16v_t> i16v2_t;
 
+    typedef std::pair<int, int> coord_t;
+    typedef std::vector<coord_t> coords_t;
+
+    enum class Nbh {
+        VonNeumann = 4,
+        Moore = 8,
+    };
+
+    constexpr uint8_t MAX_DIGIT = 9;
+
+    coords_t neighbours(const coord_t& point, int width, int height, Nbh ntype = Nbh::VonNeumann) {
+        coords_t result;
+        auto& [row, col] = point;
+        coords_t all;
+        switch (ntype) {
+            case Nbh::VonNeumann: {
+                all = {
+                                    {row-1, col},
+                    {row,   col-1},               {row,   col+1},
+                                    {row+1, col},
+                };
+                break;
+            }
+            case Nbh::Moore: {
+                all = {
+                    {row-1, col-1}, {row-1, col}, {row-1, col+1},
+                    {row,   col-1},               {row,   col+1},
+                    {row+1, col-1}, {row+1, col}, {row+1, col+1},
+                };
+                break;
+            }
+            default:
+                std::cerr << "Unhandled neighbour enum value in neightbours()" << std::endl;
+                exit(1);
+        }
+        for (const auto& n: all) {
+            auto& [nrow, ncol] = n;
+            if ((ncol < 0) || (ncol == width) || (nrow < 0) || (nrow == height))
+                continue;
+            result.push_back(n);
+        }
+        return result;
+    }
+
     template <typename T>
     void minmax(T v1, T v2, T& out_min, T& out_max) {
         out_min = v1;
