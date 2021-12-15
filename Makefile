@@ -1,5 +1,5 @@
 CXX=g++
-CXXFLAGS=-Wall -Wextra -pedantic -std=c++17
+CXXFLAGS=-Wall -Wextra -pedantic -std=c++17 -O3
 
 SOURCES := $(wildcard day*.cpp)
 TARGETS := $(basename ${SOURCES})
@@ -55,3 +55,6 @@ day13: day13.cpp
 
 day14: day14.cpp
 	${CXX} ${CXXFLAGS} day14.cpp -o day14
+
+day15: day15.cpp
+	${CXX} ${CXXFLAGS} day15.cpp -o day15

@@ -31,12 +31,7 @@ void fill_basin(table_t& heights, const aoc::coord_t& point, basin_t& basins) {
 
 void part_1(const aoc::input_t& input) {
 
-    table_t heights(input.size(), aoc::u8v_t(input[0].size(), 0));
-    for (size_t r = 0; r < input.size(); r++) {
-        for (size_t c = 0; c < input[r].size(); c++) {
-            heights[r][c] = static_cast<uint8_t>(input[r][c] - '0');
-        }
-    }
+    table_t heights = aoc::convert(input, aoc::s2u8v);
 
     uint32_t ans = 0;
     for (size_t r = 0; r < heights.size(); r++) {
@@ -64,12 +59,7 @@ void part_1(const aoc::input_t& input) {
 
 void part_2(const aoc::input_t& input) {
 
-    table_t heights(input.size(), aoc::u8v_t(input[0].size(), 0));
-    for (size_t r = 0; r < input.size(); r++) {
-        for (size_t c = 0; c < input[r].size(); c++) {
-            heights[r][c] = static_cast<uint8_t>(input[r][c] - '0');
-        }
-    }
+    table_t heights = aoc::convert(input, aoc::s2u8v);
 
     basin_t basins;
     for (size_t r = 0; r < heights.size(); r++) {

@@ -50,12 +50,7 @@ void simulate_step(table_t& energy, uint32_t& n_flashes) {
 
 void part_1(const aoc::input_t& input) {
 
-    table_t energy(input.size(), aoc::u8v_t(input[0].size(), 0));
-    for (size_t r = 0; r < input.size(); r++) {
-        for (size_t c = 0; c < input[r].size(); c++) {
-            energy[r][c] = static_cast<uint8_t>(input[r][c] - '0');
-        }
-    }
+    table_t energy = aoc::convert(input, aoc::s2u8v);
 
     uint32_t ans = 0;
     for (size_t i = 0; i < 100; ++i) {
@@ -71,12 +66,7 @@ void part_1(const aoc::input_t& input) {
 
 void part_2(const aoc::input_t& input) {
 
-    table_t energy(input.size(), aoc::u8v_t(input[0].size(), 0));
-    for (size_t r = 0; r < input.size(); r++) {
-        for (size_t c = 0; c < input[r].size(); c++) {
-            energy[r][c] = static_cast<uint8_t>(input[r][c] - '0');
-        }
-    }
+    table_t energy = aoc::convert(input, aoc::s2u8v);
 
     uint32_t total = energy.size() * energy[0].size();
     uint32_t ans = 0;

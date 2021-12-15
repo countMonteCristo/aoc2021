@@ -103,6 +103,11 @@ namespace aoc {
     auto s2u64 = [](const std::string& s) -> uint64_t { return std::stoull(s); };
     auto s2u32 = [](const std::string& s) -> uint32_t { return std::stoul(s); };
     auto s2i32 = [](const std::string& s) -> int32_t { return std::stoi(s); };
+    auto s2u8v = [](const std::string& s) -> u8v_t {
+        u8v_t result(s.size(), 0);
+        for (size_t i = 0; i < s.size(); i++) result[i] = s[i] - '0';
+        return result;
+    };
 
     input_t split(const std::string& line, char delim, bool keep_empty=false) {
         input_t result;
@@ -136,6 +141,12 @@ std::ostream& operator<<(std::ostream& out, const std::vector<T>& row) {
     for (const auto& item: row) {
         out << item << " ";
     }
+    return out;
+}
+
+template <typename T, typename U>
+std::ostream& operator<<(std::ostream& out, const std::pair<T,U>& pair) {
+    out << pair.first << "," << pair.second;
     return out;
 }
 
