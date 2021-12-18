@@ -64,3 +64,6 @@ day16: day16.cpp
 
 day17: day17.cpp
 	${CXX} ${CXXFLAGS} day17.cpp -o day17
+
+day18: day18.cpp
+	${CXX} ${CXXFLAGS} day18.cpp -o day18
