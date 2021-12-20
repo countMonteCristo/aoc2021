@@ -98,8 +98,8 @@ void part_1(const aoc::input_t& input) {
                     int32_t h = vy*(vy+1)/2;
                     if (h > ans) {
                         ans = h;
-                        qvx = vx;
-                        qvy = vy;
+                        // qvx = vx;
+                        // qvy = vy;
                     }
                 }
             }
