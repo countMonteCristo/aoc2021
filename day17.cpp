@@ -68,8 +68,8 @@ void part_1(const aoc::input_t& input) {
     int32_t vx_max = x_range[1];
 
     int32_t ans = 0;
-    int32_t qvx = 0;
-    int32_t qvy = 0;
+    // int32_t qvx = 0;
+    // int32_t qvy = 0;
     for (int32_t vx = vx_min; vx <= vx_max; ++vx) {
         int32_t k = 1;
         int32_t d_max = vx*(vx+1)/2;
