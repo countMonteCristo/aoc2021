@@ -104,6 +104,7 @@ namespace aoc {
     auto s2u32 = [](const std::string& s) -> uint32_t { return static_cast<uint32_t>(std::stoul(s)); };
     auto s2u8 = [](const std::string& s) -> uint8_t { return static_cast<uint8_t>(std::stoul(s)); };
     auto s2i32 = [](const std::string& s) -> int32_t { return static_cast<int32_t>(std::stoi(s)); };
+    auto s2i64 = [](const std::string& s) -> int64_t { return static_cast<int64_t>(std::stoll(s)); };
     auto s2u8v = [](const std::string& s) -> u8v_t {
         u8v_t result(s.size(), 0);
         for (size_t i = 0; i < s.size(); i++) result[i] = s[i] - '0';
