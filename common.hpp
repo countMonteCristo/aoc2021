@@ -99,6 +99,11 @@ namespace aoc {
         return (s.find(c) != std::string::npos);
     }
 
+    template <typename T>
+    int sgn(T val) {
+        return (T(0) < val) - (val < T(0));
+    }
+
     auto identical = [](const std::string& s) -> std::string { return s; };
     auto s2u64 = [](const std::string& s) -> uint64_t { return static_cast<uint64_t>(std::stoull(s)); };
     auto s2u32 = [](const std::string& s) -> uint32_t { return static_cast<uint32_t>(std::stoul(s)); };
